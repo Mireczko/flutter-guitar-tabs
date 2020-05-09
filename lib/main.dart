@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:guitar_tabs/colors.dart';
+import 'package:guitar_tabs/register.dart';
+import 'package:guitar_tabs/terms.dart';
+
+import 'login.dart';
 
 void main() {
   runApp(MyApp());
@@ -69,17 +73,27 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(30),
-          child: Center(
+        child: Center(
+          child: Container(
+            padding: EdgeInsets.all(30),
+            width: 700,
             child: Column(
               children: <Widget>[
                 Text(
                   "Welcome to Guitar Tabs!",
                   style: TextStyle(
                     fontSize: 25,
-                    fontWeight: FontWeight.w100,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "The place where you can upload and download guitar tabs for your favorite songs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                  style: TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w100, height: 1.5),
+                  textAlign: TextAlign.justify,
                 ),
                 accountContainer(data, context),
               ],
@@ -93,14 +107,34 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           drawerHeader(),
           ListTile(
-            leading: Icon(Icons.note_add),
-            title: Text("Add new tab"),
+            leading: (Icon(Icons.lock_open)),
+            title: Text("Log in"),
             onTap: () => {},
           ),
           ListTile(
-            leading: Icon(Icons.queue_music),
-            title: Text("Browse tabs"),
-            onTap: () => {},
+            leading: (Icon(Icons.person_add)),
+            title: Text("Register"),
+            onTap: () => {
+              Navigator.of(context).pop(),
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => RegisterPage(),
+                ),
+              )
+            },
+          ),
+          Center(child: Divider(color: Colors.black)),
+          ListTile(
+            leading: (Icon(Icons.event_note)),
+            title: Text("Terms and conditions"),
+            onTap: () => {
+              Navigator.of(context).pop(),
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => TermsPage(),
+                ),
+              )
+            },
           ),
         ],
       )),
@@ -137,10 +171,11 @@ DrawerHeader drawerHeader() {
 Container accountContainer(data, context) {
   bool isScreenWide = data.size.width >= 800;
   return Container(
-    padding: EdgeInsets.all(50),
+    padding: EdgeInsets.fromLTRB(0, 30, 0, 30),
     child: Center(
       child: Wrap(
         direction: isScreenWide ? Axis.horizontal : Axis.vertical,
+        alignment: WrapAlignment.spaceBetween,
         spacing: 10.0,
         children: <Widget>[
           Container(
@@ -170,7 +205,13 @@ Container accountContainer(data, context) {
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   child: Text("Click to log in"),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => LoginPage(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -205,7 +246,13 @@ Container accountContainer(data, context) {
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   child: Text("Click to register"),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => RegisterPage(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -214,4 +261,32 @@ Container accountContainer(data, context) {
       ),
     ),
   );
+}
+
+void dialog(String text1, String text2, Color button, BuildContext context) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          //uses the custom alert dialog
+          title: Text(text1, textAlign: TextAlign.center),
+          content: Text(
+            text2,
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              color: button,
+              child: Text(
+                'Ok',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      });
 }
