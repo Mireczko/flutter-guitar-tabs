@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:guitar_tabs/colors.dart';
+import 'package:guitar_tabs/dashboard.dart';
 import 'package:guitar_tabs/register.dart';
 import 'package:guitar_tabs/terms.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 import 'login.dart';
 
 void main() {
@@ -10,16 +14,72 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Guitar tabs',
       theme: buildThemeData(),
-      home: MyHomePage(title: 'Guitar tabs'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => FutureBuilder(
+            future: checkLoginStatus(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                print(snapshot.data);
+                return snapshot.data
+                    ? DashboardPage()
+                    : MyHomePage(title: "Guitar tabs");
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            }),
+        '/login': (BuildContext context) => LoginPage(),
+        '/register': (BuildContext context) => RegisterPage(),
+        '/dashboard': (BuildContext context) => DashboardPage(),
+      },
     );
   }
+}
+
+Future<bool> checkLoginStatus() async {
+  print("weszlo");
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  try {
+    Map verify = {
+      "token": sharedPreferences.getString("token"),
+    };
+    Map refresh = {
+      "refresh": sharedPreferences.getString("refresh"),
+    };
+    var strings;
+    var verify_response = await http.post(
+      "${strings.url}api/token/verify/",
+      body: JsonEncoder().convert(verify),
+      headers: {"Content-Type": "application/json"},
+    );
+    print(verify_response.statusCode);
+    if (verify_response.statusCode != 200) {
+      var refresh_response = await http.post(
+        "${strings.url}api/token/refresh/",
+        body: JsonEncoder().convert(refresh),
+        headers: {"Content-Type": "application/json"},
+      );
+      var jsonData = json.decode(refresh_response.body);
+      if (refresh_response.statusCode == 200) {
+        sharedPreferences.setString("token", jsonData['access']);
+        return true;
+      }
+      if (sharedPreferences.getString("token") == null) {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  } catch (e) {
+    return false;
+  }
+  print("wyszlo");
 }
 
 ThemeData buildThemeData() {
@@ -153,7 +213,7 @@ DrawerHeader drawerHeader() {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              "Jakub Walawender",
+              "GuitarTabs",
               style: TextStyle(
                 color: Colors.white70,
                 fontWeight: FontWeight.w500,

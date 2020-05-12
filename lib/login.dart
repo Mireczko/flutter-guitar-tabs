@@ -9,6 +9,7 @@ import 'package:guitar_tabs/main.dart';
 import 'package:guitar_tabs/register.dart';
 import 'package:guitar_tabs/strings.dart' as strings;
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -152,9 +153,12 @@ class _LoginPageState extends State<LoginPage> {
       "email": email,
       "password": password,
     };
-
+    var jsonData;
+    print("przed");
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    print("po");
     var response = await http.post(
-      "${strings.url}api/login/",
+      "${strings.url}api/token/",
       body: JsonEncoder().convert(data),
       headers: {
         "Content-Type": "application/json",
@@ -165,9 +169,14 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       setState(() {
         _isLoading = false;
+        jsonData = json.decode(response.body);
+        print(jsonData['access']);
+        sharedPreferences.setString("token", jsonData['access']);
+        sharedPreferences.setString("refresh", jsonData['refresh']);
+        print(sharedPreferences.getString('token'));
       });
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => dashboardPage()),
+          MaterialPageRoute(builder: (BuildContext context) => DashboardPage()),
           (Route<dynamic> route) => false);
     } else if (response.statusCode == 401) {
       setState(() {
@@ -177,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
       });
       dialog(
           "Nie udało się zalogować!",
-          "Podany adres email istnieje w naszej bazie danych\nUżyj innego",
+          "Podano niewłaście dane.",
           Colors.red[700],
           context);
     } else {
