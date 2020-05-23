@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         //       if (snapshot.hasData) {
         //         print(snapshot.data);
         //         return snapshot.data
-        //             ? DashboardPage()
+        //             ? MyTabsPage()
         //             : MyHomePage(title: "Guitar tabs");
         //       } else {
         //         return Center(child: CircularProgressIndicator());

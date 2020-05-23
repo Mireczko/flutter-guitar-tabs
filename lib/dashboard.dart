@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:guitar_tabs/add_tab.dart';
 import 'package:guitar_tabs/main.dart';
+import 'package:guitar_tabs/my_tabs.dart';
 import 'package:guitar_tabs/tab.dart';
 import 'package:guitar_tabs/terms.dart';
 import 'package:http/http.dart' as http;
@@ -170,18 +171,6 @@ class _DashboardPageState extends State<DashboardPage> {
         children: <Widget>[
           drawerHeader(),
           ListTile(
-            leading: (Icon(Icons.event_note)),
-            title: Text("Terms and conditions"),
-            onTap: () => {
-              Navigator.of(context).pop(),
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => TermsPage(),
-                ),
-              )
-            },
-          ),
-          ListTile(
             leading: (Icon(Icons.add)),
             title: Text("Add new tab"),
             onTap: () => {
@@ -189,6 +178,30 @@ class _DashboardPageState extends State<DashboardPage> {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) => (AddTabPage()),
+                ),
+              )
+            },
+          ),
+          ListTile(
+            leading: (Icon(Icons.line_style)),
+            title: Text("My Tabs"),
+            onTap: () => {
+              Navigator.of(context).pop(),
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => MyTabsPage(),
+                ),
+              )
+            },
+          ),
+          ListTile(
+            leading: (Icon(Icons.event_note)),
+            title: Text("Terms and conditions"),
+            onTap: () => {
+              Navigator.of(context).pop(),
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => TermsPage(),
                 ),
               )
             },

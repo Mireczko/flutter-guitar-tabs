@@ -73,7 +73,6 @@ class _CommentPageState extends State<CommentPage> {
         "Authorization": "Bearer $token"
       },
     );
-    var a =2;
   }
 
   @override
