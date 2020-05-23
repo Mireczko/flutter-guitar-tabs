@@ -33,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
       bottomNavigationBar: Stack(
         children: [
           new Container(
-            height: 75.0,
+            height: 30.0,
             color: kPrimaryColor,
           ),
           Positioned(
@@ -44,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Center(
               child: Container(
                 child: Text("Guitar Tabs© 2020",
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
+                    style: TextStyle(color: Colors.white, fontSize: 12)),
               ),
             ),
           ),

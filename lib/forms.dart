@@ -52,6 +52,34 @@ TextFormField emailField(String title, TextEditingController emailController) {
   );
 }
 
+TextFormField tabTextField(String title, TextEditingController tabController) {
+  return TextFormField(
+    keyboardType: TextInputType.multiline,
+    maxLines: null,
+    validator: (value) {
+      if (value.isEmpty) {
+        return 'You have to fill this field!';
+      }
+    },
+    controller: tabController,
+    style: TextStyle(color: Colors.black),
+    decoration: fieldDecoration(title),
+  );
+}
+
+TextFormField tabField(String title, TextEditingController tabController) {
+  return TextFormField(
+    validator: (value) {
+      if (value.isEmpty) {
+        return 'You have to fill this field!';
+      }
+    },
+    controller: tabController,
+    style: TextStyle(color: Colors.black),
+    decoration: fieldDecoration(title),
+  );
+}
+
 TextFormField passwordField(
     String title,
     TextEditingController confirmPasswordController,
@@ -148,8 +176,7 @@ TextFormField firstNameField(
   );
 }
 
-TextFormField nickField(
-    String title, TextEditingController nickController) {
+TextFormField nickField(String title, TextEditingController nickController) {
   return TextFormField(
     textCapitalization: TextCapitalization.sentences,
     validator: (value) {
@@ -162,7 +189,6 @@ TextFormField nickField(
     decoration: fieldDecoration(title),
   );
 }
-
 
 TextFormField lastNameField(
     String title, TextEditingController lastNameController) {

@@ -20,23 +20,25 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Guitar tabs',
       theme: buildThemeData(),
-      initialRoute: '/',
+      initialRoute: '/dashboard',
       routes: {
-        '/': (context) => FutureBuilder(
-            future: checkLoginStatus(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                print(snapshot.data);
-                return snapshot.data
-                    ? DashboardPage()
-                    : MyHomePage(title: "Guitar tabs");
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            }),
+        // '/': (context) => FutureBuilder(
+        //     future: checkLoginStatus(),
+        //     builder: (context, snapshot) {
+        //       if (snapshot.hasData) {
+        //         print(snapshot.data);
+        //         return snapshot.data
+        //             ? DashboardPage()
+        //             : MyHomePage(title: "Guitar tabs");
+        //       } else {
+        //         return Center(child: CircularProgressIndicator());
+        //       }
+        //     }),
+        '/': (BuildContext context) => MyHomePage(),
         '/login': (BuildContext context) => LoginPage(),
         '/register': (BuildContext context) => RegisterPage(),
         '/dashboard': (BuildContext context) => DashboardPage(),
+        // '/tab'
       },
     );
   }
@@ -93,9 +95,6 @@ ThemeData buildThemeData() {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -107,15 +106,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
-          widget.title,
+          "Guitar Tabs",
           style: TextStyle(fontWeight: FontWeight.w100),
         ),
       ),
       bottomNavigationBar: Stack(
         children: [
           new Container(
-            height: 75.0,
+            height: 30.0,
             color: kPrimaryColor,
           ),
           Positioned(
@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Center(
               child: Container(
                 child: Text("Guitar Tabs© 2020",
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
+                    style: TextStyle(color: Colors.white, fontSize: 12)),
               ),
             ),
           ),
@@ -150,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 20,
                 ),
                 Text(
-                  "The place where you can upload and download guitar tabs for your favorite songs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                  "The place where you can upload and download guitar tabs for your favorite songs.",
                   style: TextStyle(
                       fontSize: 17, fontWeight: FontWeight.w100, height: 1.5),
                   textAlign: TextAlign.justify,
@@ -169,7 +169,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ListTile(
             leading: (Icon(Icons.lock_open)),
             title: Text("Log in"),
-            onTap: () => {},
+            onTap: () => {
+              Navigator.of(context).pop(),
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => LoginPage(),
+                ),
+              )
+            },
           ),
           ListTile(
             leading: (Icon(Icons.person_add)),
@@ -255,9 +262,9 @@ Container accountContainer(data, context) {
                   height: 30,
                 ),
                 Text(
-                  "If you have already registered in our system, log in to add new guitar tabs and browse existing ones",
-                  textAlign: TextAlign.center,
-                ),
+                    "If you have already registered in our system, log in to add new guitar tabs and browse existing ones",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.w200)),
                 SizedBox(
                   height: 30,
                 ),
@@ -296,9 +303,9 @@ Container accountContainer(data, context) {
                   height: 30,
                 ),
                 Text(
-                  "If you haven't already registered, please do so by filling the form.\n",
-                  textAlign: TextAlign.center,
-                ),
+                    "If you haven't already registered, please do so by filling the form.\n",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.w200)),
                 SizedBox(
                   height: 30,
                 ),

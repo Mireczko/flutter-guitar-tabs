@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           "Log in",
           style: TextStyle(fontWeight: FontWeight.w100),
@@ -33,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
       bottomNavigationBar: Stack(
         children: [
           new Container(
-            height: 75.0,
+            height: 30.0,
             color: kPrimaryColor,
           ),
           Positioned(
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Center(
               child: Container(
                 child: Text("Guitar Tabs© 2020",
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
+                    style: TextStyle(color: Colors.white, fontSize: 12)),
               ),
             ),
           ),
@@ -154,9 +155,7 @@ class _LoginPageState extends State<LoginPage> {
       "password": password,
     };
     var jsonData;
-    print("przed");
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    print("po");
     var response = await http.post(
       "${strings.url}api/token/",
       body: JsonEncoder().convert(data),
